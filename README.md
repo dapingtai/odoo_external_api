@@ -108,8 +108,23 @@ BASE_URL=/      # API 基礎 URL
    - 員工資料處理
    - 資料表綁定操作
 
-4. ** 中繼層 **
-   - OAuth 認證 (處理 odoo web 沒有的 SSO_CLIENT_SECRET )
+4. **中繼層**
+   - OAuth 認證 (處理 odoo web 沒有的 SSO_CLIENT_SECRET)
+   - SSO Callback 處理
+     ```http
+     GET /middleware/oauth/callback
+     ```
+     參數：
+     - `code`: OAuth 授權碼
+     - `database`: Odoo 資料庫名稱
+     - `oauth_provider_id`: OAuth 提供者 ID
+     - `redirect_uri`: 重定向 URI（預設為 "/odoo"）
+     
+     功能：
+     - 處理 OAuth 授權碼
+     - 獲取存取令牌
+     - 重定向回 Odoo 系統
+     - 支援錯誤處理和日誌記錄
 
 ### BaseService 類別
 ```python
