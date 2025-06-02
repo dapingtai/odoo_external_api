@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  api:
+    container_name: odoo_external_api
+    build:
+      context: .
+    image: "harbor01.ces.myfiinet.com/hr_system/odoo_external_api:${CI_COMMIT_TAG:-latest}"
+    restart: "unless-stopped"
+    ports:
+      - "8081:3000"
+    environment:
+      - APP_TAG=${CI_COMMIT_TAG:-latest}
+    command:
+      - python
+      - run.py
+      - "--${MODE:-dev}"
+    logging:
+      driver: "gelf"
+      options:
+        gelf-address: "${GELF_ADDRESS:-udp://10.62.172.136:12201}"
+        tag: "odoo_external_api"
